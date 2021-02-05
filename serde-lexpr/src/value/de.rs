@@ -114,6 +114,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     {
         self.input
             .as_str()
+            .or_else(|| self.input.as_symbol())
             .ok_or_else(|| invalid_value(self.input, "a string"))
             .and_then(|s| visitor.visit_borrowed_str(s))
     }
