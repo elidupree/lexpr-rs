@@ -128,7 +128,7 @@ fn test_tuple_enum() {
     test_serde(&Greeting::GoodBye, &sexp!(GoodBye));
     test_serde(
         &Greeting::Other("Farewell".into()),
-        &sexp!((Other . "Farewell")),
+        &sexp!((Other "Farewell")),
     );
     test_serde(
         &Greeting::Counted(42, "Have a nice day".into()),
@@ -149,10 +149,10 @@ fn test_complex_enum() {
         },
     }
     test_serde(&Complex::Unit, &sexp!(Unit));
-    test_serde(&Complex::OptionSingleton(None), &sexp!((OptionSingleton)));
+    test_serde(&Complex::OptionSingleton(None), &sexp!((OptionSingleton ())));
     test_serde(
         &Complex::OptionSingleton(Some("hello".into())),
-        &sexp!((OptionSingleton "hello")),
+        &sexp!((OptionSingleton ("hello"))),
     );
     let s = Complex::Struct {
         s: Some("hello".into()),
@@ -163,6 +163,19 @@ fn test_complex_enum() {
         &s,
         &sexp!((Struct (s "hello") (v . (1 2 3)) (t . #(23 1.23 "good bye")))),
     );
+}
+
+#[test]
+fn test_struct_in_enum() {
+    #[derive(Serialize, Deserialize, PartialEq, Debug)]
+    struct Struct {
+        field: i64,
+    }
+    #[derive(Serialize, Deserialize, PartialEq, Debug)]
+    enum Enum {
+        Struct(Struct),
+    }
+    test_serde(&Enum::Struct(Struct{field: 0}), &sexp!((Struct ((field . 0)))));
 }
 
 #[test]

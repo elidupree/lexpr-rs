@@ -112,7 +112,7 @@
 //!   Other(String),
 //! }
 //!
-//! let choices: Vec<Choice> = from_str("(yes no (other . \"foo\"))").unwrap();
+//! let choices: Vec<Choice> = from_str("(yes no (other \"foo\"))").unwrap();
 //! assert_eq!(choices, vec![Choice::Yes, Choice::No, Choice::Other("foo".into())]);
 //!
 //! #[derive(Serialize, Deserialize, Debug, PartialEq, Eq)]
@@ -128,13 +128,13 @@
 //! let unit: Example = from_str("unit").unwrap();
 //! assert_eq!(unit, Example::Unit);
 //!
-//! let newtype: Example = from_str("(newtype . 42)").unwrap();
+//! let newtype: Example = from_str("(newtype 42)").unwrap();
 //! assert_eq!(newtype, Example::Newtype(42));
 //!
-//! let newtype_some: Example = from_str("(newtype-option 23)").unwrap();
+//! let newtype_some: Example = from_str("(newtype-option (23))").unwrap();
 //! assert_eq!(newtype_some, Example::NewtypeOption(Some(23)));
 //!
-//! let newtype_none: Example = from_str("(newtype-option)").unwrap();
+//! let newtype_none: Example = from_str("(newtype-option ())").unwrap();
 //! assert_eq!(newtype_none, Example::NewtypeOption(None));
 //!
 //! let tuple: Example = from_str("(tuple 1 2)").unwrap();

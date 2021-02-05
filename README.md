@@ -1,5 +1,10 @@
 # lexpr: S-expressions for Rust [![Build Status]][gh-actions] [![Codecov]][codecov] [![Rustc Version 1.32+]][rustc]
 
+## what's this?
+**EliDupree note**: This is a hacked version of [Rotty's lexpr crate](https://github.com/rotty/lexpr-rs/), modified with the intent of making it compatible with the S-expression format used by [SerAPI](https://github.com/ejgallego/coq-serapi), but without concern for breaking other use cases.
+
+## original readme contents:
+
 [Build Status]: https://github.com/rotty/lexpr-rs/workflows/CI/badge.svg
 [gh-actions]: https://github.com/rotty/lexpr-rs/actions
 [codecov]: https://codecov.io/github/rotty/lexpr-rs/coverage.svg?branch=master

@@ -501,7 +501,8 @@ impl<'de> de::VariantAccess<'de> for VariantAccess<'de> {
     where
         T: de::DeserializeSeed<'de>,
     {
-        seed.deserialize(&mut Deserializer::from_value(self.cell.cdr()))
+        seed.deserialize(&mut Deserializer::from_value(self.cell.cdr().as_cons()
+            .ok_or_else(|| invalid_value(self.cell.cdr(), "cons cell"))?.car()))
     }
 
     fn tuple_variant<V>(self, _len: usize, visitor: V) -> Result<V::Value>

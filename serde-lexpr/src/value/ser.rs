@@ -109,7 +109,7 @@ impl ser::Serializer for Serializer {
     where
         T: ser::Serialize,
     {
-        Ok(Value::cons(Value::symbol(variant), to_value(value)?))
+        Ok(Value::cons(Value::symbol(variant), Value::cons(to_value(value)?, Value::Null)))
     }
 
     /// Serializes `None` as the empty list.
