@@ -61,7 +61,7 @@ fn test_hashmap() {
     test_serde(&hm, &sexp!(()));
     hm.insert("one".to_string(), 1);
     #[rustfmt::skip] // needed to avoid mangling of the `sexp!` invokation.
-    test_serde(&hm, &sexp!((("one" . 1))));
+    test_serde(&hm, &sexp!((("one" 1))));
 }
 
 #[test]
@@ -161,7 +161,7 @@ fn test_complex_enum() {
     };
     test_serde(
         &s,
-        &sexp!((Struct (s "hello") (v . (1 2 3)) (t . #(23 1.23 "good bye")))),
+        &sexp!((Struct (s ("hello")) (v (1 2 3)) (t #(23 1.23 "good bye")))),
     );
 }
 
@@ -175,7 +175,7 @@ fn test_struct_in_enum() {
     enum Enum {
         Struct(Struct),
     }
-    test_serde(&Enum::Struct(Struct{field: 0}), &sexp!((Struct ((field . 0)))));
+    test_serde(&Enum::Struct(Struct{field: 0}), &sexp!((Struct ((field 0)))));
 }
 
 #[test]
@@ -239,7 +239,7 @@ fn test_basic_struct() {
     };
     test_serde(
         &thing,
-        &sexp!(((foo . -324) (bar . "Hello World") (baz . #t))),
+        &sexp!(((foo -324) (bar "Hello World") (baz #t))),
     );
 }
 

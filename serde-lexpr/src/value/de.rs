@@ -453,11 +453,14 @@ impl<'de> de::MapAccess<'de> for MapAccess<'de> {
         let cell = self
             .cursor
             .expect("next value requested after end of sequence");
-        let value = cell
+        let cell2 = cell
             .car()
             .as_cons()
-            .ok_or_else(|| invalid_value(cell.car(), "cons cell"))
-            .and_then(|cell| seed.deserialize(&mut Deserializer::from_value(cell.cdr())))?;
+            .ok_or_else(|| invalid_value(cell.car(), "cons cell"))?;
+        let value = cell2.cdr()
+            .as_cons()
+            .ok_or_else(|| invalid_value(cell2.car(), "cons cell"))
+            .and_then(|cell| seed.deserialize(&mut Deserializer::from_value(cell.car())))?;
         self.cursor = match cell.cdr() {
             Value::Cons(cell) => Some(cell),
             Value::Null => None,

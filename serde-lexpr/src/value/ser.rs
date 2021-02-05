@@ -301,7 +301,7 @@ impl ser::SerializeMap for SerializeMap {
         T: ser::Serialize,
     {
         match self.next_key.take() {
-            Some(key) => self.entries.push(Value::cons(key, to_value(value)?)),
+            Some(key) => self.entries.push(Value::cons(key, Value::cons(to_value(value)?, Value::Null))),
             None => panic!("serialize_value called before serialize_key"),
         }
         Ok(())
@@ -313,7 +313,7 @@ impl ser::SerializeMap for SerializeMap {
         V: ser::Serialize,
     {
         self.entries
-            .push(Value::cons(to_value(key)?, to_value(value)?));
+            .push(Value::cons(to_value(key)?, Value::cons(to_value(value)?, Value::Null)));
         Ok(())
     }
 
@@ -331,7 +331,7 @@ impl ser::SerializeStruct for SerializeStruct {
         V: ser::Serialize,
     {
         self.fields
-            .push(Value::cons(Value::symbol(field), to_value(value)?));
+            .push(Value::cons(Value::symbol(field), Value::cons(to_value(value)?, Value::Null)));
         Ok(())
     }
 
@@ -349,7 +349,7 @@ impl ser::SerializeStructVariant for SerializeStructVariant {
         V: ser::Serialize,
     {
         self.fields
-            .push(Value::cons(Value::symbol(field), to_value(v)?));
+            .push(Value::cons(Value::symbol(field), Value::cons(to_value(v)?, Value::Null)));
         Ok(())
     }
 

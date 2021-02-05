@@ -71,9 +71,8 @@
 //!
 //! ## Structs
 //!
-//! Structs are serialized as association lists, i.e. a list consisting of cons
-//! cells, where each cell's `car` is the name of the struct field (as a
-//! symbol), and the `cdr` containing the field's value.
+//! Structs are serialized as association lists, i.e. a list consisting of lists,
+//! with each list contaning the field name and value.
 //!
 //! ```
 //! use serde_lexpr::{from_str, to_string};
@@ -86,8 +85,8 @@
 //! };
 //!
 //! let billy = Person { name: "Billy".into(), age: 42 };
-//! assert_eq!(to_string(&billy).unwrap(), "((name . \"Billy\") (age . 42))".to_string());
-//! let joanne: Person = from_str("((name . \"Joanne\") (age . 23))").unwrap();
+//! assert_eq!(to_string(&billy).unwrap(), "((name \"Billy\") (age 42))".to_string());
+//! let joanne: Person = from_str("((name \"Joanne\") (age 23))").unwrap();
 //! assert_eq!(joanne, Person { name: "Joanne".into(), age: 23 });
 //! ```
 //!
@@ -140,7 +139,7 @@
 //! let tuple: Example = from_str("(tuple 1 2)").unwrap();
 //! assert_eq!(tuple, Example::Tuple(1, 2));
 //!
-//! let struct_variant: Example = from_str("(struct (foo . #t) (bar . 3))").unwrap();
+//! let struct_variant: Example = from_str("(struct (foo #t) (bar 3))").unwrap();
 //! assert_eq!(struct_variant, Example::Struct { foo: true, bar: 3 });
 //! ```
 //!
