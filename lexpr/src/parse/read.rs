@@ -643,8 +643,8 @@ impl<'a> Read<'a> for StrRead<'a> {
     ) -> Result<Reference<'a, 's, str>> {
         self.delegate.parse_r6rs_str_bytes(scratch, |_, bytes| {
             // The input is assumed to be valid UTF-8 and the \x-escapes are
-            // checked along the way, so don't need to check here.
-            Ok(unsafe { str::from_utf8_unchecked(bytes) })
+            // checked along the way, so `unwrap` is okay here.
+            Ok(str::from_utf8(bytes).unwrap())
         })
     }
 
@@ -661,8 +661,8 @@ impl<'a> Read<'a> for StrRead<'a> {
     fn parse_symbol<'s>(&'s mut self, scratch: &'s mut Vec<u8>) -> Result<Reference<'a, 's, str>> {
         self.delegate.parse_symbol_bytes(scratch, |_, bytes| {
             // The input is assumed to be valid UTF-8 and the \u-escapes are
-            // checked along the way, so don't need to check here.
-            Ok(unsafe { str::from_utf8_unchecked(bytes) })
+            // checked along the way, so `unwrap` is okay here.
+            Ok(str::from_utf8(bytes).unwrap())
         })
     }
 }

@@ -1241,9 +1241,8 @@ impl<'de, R: Read<'de>> Parser<R> {
         itoa::write(&mut self.scratch, significand).unwrap();
         self.scratch.push(b'e');
         itoa::write(&mut self.scratch, exponent).unwrap();
-        // Unsafe should be OK here, as `itoa::write()` should
-        // never produce non-ASCII output.
-        let f: f64 = unsafe { str::from_utf8_unchecked(&self.scratch) }
+        // `itoa::write()` should never produce non-ASCII output.
+        let f: f64 = str::from_utf8(&self.scratch).unwrap()
             .parse()
             .map_err(|_| self.error(ErrorCode::NumberOutOfRange))?;
         if !pos {

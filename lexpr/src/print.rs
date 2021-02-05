@@ -928,10 +928,8 @@ pub fn to_vec_custom(value: &Value, options: Options) -> io::Result<Vec<u8>> {
 #[inline]
 pub fn to_string(value: &Value) -> io::Result<String> {
     let vec = to_vec(value)?;
-    let string = unsafe {
-        // We do not emit invalid UTF-8.
-        String::from_utf8_unchecked(vec)
-    };
+    // We do not emit invalid UTF-8, so we can `unwrap` here.
+    let string = String::from_utf8(vec).unwrap();
     Ok(string)
 }
 
@@ -939,10 +937,8 @@ pub fn to_string(value: &Value) -> io::Result<String> {
 #[inline]
 pub fn to_string_custom(value: &Value, options: Options) -> io::Result<String> {
     let vec = to_vec_custom(value, options)?;
-    let string = unsafe {
-        // We do not emit invalid UTF-8.
-        String::from_utf8_unchecked(vec)
-    };
+    // We do not emit invalid UTF-8, so we can `unwrap` here.
+    let string = String::from_utf8(vec).unwrap();
     Ok(string)
 }
 
