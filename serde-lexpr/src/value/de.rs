@@ -112,11 +112,14 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
     where
         V: de::Visitor<'de>,
     {
-        self.input
-            .as_str()
-            .or_else(|| self.input.as_symbol())
-            .ok_or_else(|| invalid_value(self.input, "a string"))
-            .and_then(|s| visitor.visit_borrowed_str(s))
+        match self.input {
+            Value::Number(number) => visitor.visit_string(number.to_string()),
+            _ => self.input
+                .as_str()
+                .or_else(|| self.input.as_symbol())
+                .ok_or_else(|| invalid_value(self.input, "a string"))
+                .and_then(|s| visitor.visit_borrowed_str(s))
+        }
     }
 
     fn deserialize_string<V>(self, visitor: V) -> Result<V::Value>
