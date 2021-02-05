@@ -323,7 +323,7 @@ fn invalid_value(value: &Value, expected: &'static str) -> Error {
         Value::Number(_) => de::Unexpected::Other("number"), // FIXME: implement properly
         Value::Vector(_) => de::Unexpected::Other("vector"),
     };
-    Error::invalid_type(unexpected, &expected)
+    Error::invalid_type_augmented(unexpected, &expected, value)
 }
 
 struct ConsAccess<'a> {

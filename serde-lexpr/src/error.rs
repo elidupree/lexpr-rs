@@ -160,6 +160,16 @@ impl de::Error for Error {
         }
     }
 }
+impl Error {
+    /// As `invalid_type`, but with some extra information to help debug.
+    pub fn invalid_type_augmented(unexp: de::Unexpected<'_>, exp: &dyn de::Expected, value: &lexpr::Value) -> Self {
+        if let de::Unexpected::Unit = unexp {
+            de::Error::custom(format_args!("expected {}; invalid type: null; value: {}", exp, value))
+        } else {
+            de::Error::custom(format_args!("expected {}; invalid type: {}; value: {}", unexp, exp, value))
+        }
+    }
+}
 
 impl ser::Error for Error {
     fn custom<T: Display>(msg: T) -> Error {
