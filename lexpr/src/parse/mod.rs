@@ -836,30 +836,30 @@ impl<'de, R: Read<'de>> Parser<R> {
                             return Ok(Value::Null);
                         }
                     }
-                    b'.' => {
-                        self.eat_char();
-                        let next = self.peek_or_null()?;
-                        if next == 0 || is_delimiter(next) {
-                            if !have_value {
-                                return Err(self.peek_error(ErrorCode::ExpectedSomeValue));
-                            }
-                            pair.set_cdr(self.expect_value()?);
-                            match self.parse_whitespace()? {
-                                Some(b')') => return Ok(Value::Cons(list)),
-                                Some(_) => {
-                                    return Err(self.peek_error(ErrorCode::TrailingCharacters))
-                                }
-                                None => return Err(self.peek_error(ErrorCode::EofWhileParsingList)),
-                            }
-                        } else {
-                            if have_value {
-                                pair.set_cdr(Value::from((Value::Nil, Value::Null)));
-                                pair = pair.cdr_mut().as_cons_mut().unwrap();
-                            }
-                            pair.set_car(Value::symbol(self.parse_symbol_suffix(".")?));
-                            have_value = true;
-                        }
-                    }
+                    // b'.' => {
+                    //     self.eat_char();
+                    //     let next = self.peek_or_null()?;
+                    //     if next == 0 || is_delimiter(next) {
+                    //         if !have_value {
+                    //             return Err(self.peek_error(ErrorCode::ExpectedSomeValue));
+                    //         }
+                    //         pair.set_cdr(self.expect_value()?);
+                    //         match self.parse_whitespace()? {
+                    //             Some(b')') => return Ok(Value::Cons(list)),
+                    //             Some(_) => {
+                    //                 return Err(self.peek_error(ErrorCode::TrailingCharacters))
+                    //             }
+                    //             None => return Err(self.peek_error(ErrorCode::EofWhileParsingList)),
+                    //         }
+                    //     } else {
+                    //         if have_value {
+                    //             pair.set_cdr(Value::from((Value::Nil, Value::Null)));
+                    //             pair = pair.cdr_mut().as_cons_mut().unwrap();
+                    //         }
+                    //         pair.set_car(Value::symbol(self.parse_symbol_suffix(".")?));
+                    //         have_value = true;
+                    //     }
+                    // }
                     _ => {
                         if have_value {
                             pair.set_cdr(Value::from((Value::Nil, Value::Null)));
