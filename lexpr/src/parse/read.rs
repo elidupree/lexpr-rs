@@ -228,9 +228,9 @@ where
             match self.peek()? {
                 Some(b' ') | Some(b'\n') | Some(b'\t') | Some(b'\r') | Some(b'(') | Some(b'[') | Some(b')') | Some(b']') | Some(b'"')
                 | None => {
-                    if scratch == b"." {
-                        return error(self, ErrorCode::InvalidSymbol);
-                    }
+                    // if scratch == b"." {
+                    //     return error(self, ErrorCode::InvalidSymbol);
+                    // }
                     return result(self, scratch);
                 }
                 Some(ch) => {
@@ -389,15 +389,15 @@ impl<'a> SliceRead<'a> {
                         // Fast path: return a slice of the raw S-expression without any
                         // copying.
                         let borrowed = &self.slice[start..self.index];
-                        if borrowed == b"." {
-                            return error(self, ErrorCode::InvalidSymbol);
-                        }
+                        // if borrowed == b"." {
+                        //     return error(self, ErrorCode::InvalidSymbol);
+                        // }
                         return result(self, borrowed).map(Reference::Borrowed);
                     } else {
                         scratch.extend_from_slice(&self.slice[start..self.index]);
-                        if scratch == b"." {
-                            return error(self, ErrorCode::InvalidSymbol);
-                        }
+                        // if scratch == b"." {
+                        //     return error(self, ErrorCode::InvalidSymbol);
+                        // }
                         // "as &[u8]" is required for rustc 1.8.0
                         let copied = scratch as &[u8];
                         return result(self, copied).map(Reference::Copied);
