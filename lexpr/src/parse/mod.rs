@@ -594,11 +594,7 @@ impl<'de, R: Read<'de>> Parser<R> {
                 }
             }
             _ => {
-                if SYMBOL_EXTENDED.contains(&peek) {
-                    Token::Symbol(self.parse_symbol()?.into())
-                } else {
-                    return Err(self.peek_error(ErrorCode::ExpectedSomeValue));
-                }
+                Token::Symbol(self.parse_symbol()?.into())
             }
         };
         Ok(token)
