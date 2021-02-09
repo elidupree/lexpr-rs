@@ -66,7 +66,7 @@ impl<'de, 'a> de::Deserializer<'de> for &'a mut Deserializer<'de> {
             Value::Nil => visitor.visit_unit(),
             Value::Null => visitor.visit_seq(ListAccess::empty()),
             Value::Bool(b) => visitor.visit_bool(*b),
-            Value::Cons(cell) => visitor.visit_seq(ConsAccess::new(cell)),
+            Value::Cons(cell) => visitor.visit_seq(ListAccess::new(cell)),
             Value::Keyword(_) => Err(invalid_value(self.input, "rust-compatible value")),
             Value::Symbol(s) => visitor.visit_borrowed_str(s),
             Value::Number(n) => visit_number(n, visitor),
